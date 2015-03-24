@@ -1,0 +1,30 @@
+{
+  "name": "btrz-formatter",
+  "version": "1.0.0",
+  "description": "A formatter library",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/istanbul-harmony/lib/cli.js cover node_modules/mocha/bin/_mocha -- --ui bdd",
+    "test-w": "node_modules/mocha/bin/mocha -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Betterez/btrz-formatter.git"
+  },
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "mocha": "^2.2.1",
+    "istanbul-harmony": "^0.3.1"
+  },
+  "keywords": [
+    "Formatting",
+    "btrz",
+    "Betterez"
+  ],
+  "author": "info@betterez.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Betterez/btrz-formatter/issues"
+  },
+  "homepage": "https://github.com/Betterez/btrz-formatter"
+}
