@@ -1,9 +1,6 @@
-"use strict";
-
-var Formatter = require("../index").formatter,
-  expect = require("chai").expect;
-
 describe("Formatter", function () {
+  const Formatter = require("../index");
+  const expect = require("chai").expect;
 
   describe("replaceFrom", function () {
     var values;
@@ -63,6 +60,24 @@ describe("Formatter", function () {
       });
     });
 
+  });
+
+  describe("bzDate", function () {
+    var BzDate = require("bz-date").BzDate;
+
+    it("should return the bzDate date as string with the passed dateformat", function () {
+      var bzDate = new BzDate();
+      var date = (bzDate).toLiteral();
+      var dateFormat = "mm/dd/yyyy";
+      expect(Formatter.bzDate(date, dateFormat)).to.be.eql(bzDate.toString(dateFormat))
+    });
+
+    it("should return the bzDate date as string with the passed datetime format", function () {
+      var bzDate = new BzDate();
+      var date = (bzDate).toLiteral();
+      var dateFormat = "mm/dd/yyyy HH:MM";
+      expect(Formatter.bzDate(date, dateFormat)).to.be.eql(bzDate.toString(dateFormat))
+    });
   });
 
   describe("timeFormat", function () {
@@ -131,8 +146,8 @@ describe("Formatter", function () {
   describe("timeSpan", function () {
 
     it("should return the time span part of an object", function () {
-      var d = new Date(0, 0, 0, 1, 10, 0, 0);
-      expect(Formatter.timeSpan(d)).to.be.eql("06:10:00");
+      var d = new Date(Date.UTC(2015, 2, 1, 6, 24, 12));
+      expect(Formatter.timeSpan(d)).to.be.eql("06:24:12");
     });
 
     it("should return a one hour time span", function () {
@@ -160,6 +175,16 @@ describe("Formatter", function () {
 
   });
 
+  describe("moneyOrBlank", function () {
+    it("should not modify the input value", function () {
+      expect(Formatter.moneyOrBlank("$ 1.00")).to.be.eql("$ 1.00");
+    });
+
+    it("should return an empty string", function () {
+      expect(Formatter.moneyOrBlank("$ 0.00")).to.be.eql("");
+    });
+  });
+
   describe("truncate", function () {
 
     it("should return the string", function () {
@@ -175,4 +200,43 @@ describe("Formatter", function () {
     });
   });
 
+  describe("itemIdLink", function () {
+
+    it("should render the link for a ticket", function () {
+      expect(Formatter.itemIdLink("XDFGHTY", "true", "ticket", "54e89f661fd39fa22f0005fb")).to.be.eql("<a href=\"/tickets/54e89f661fd39fa22f0005fb\">XDFGHTY</a>");
+    });
+
+    it("should not render the ticket link if _id is missing", function () {
+      expect(Formatter.itemIdLink("XDFGHTY", "true", "ticket", "undefined")).to.be.eql("XDFGHTY");
+      expect(Formatter.itemIdLink("XDFGHTY", "true", "ticket", "null")).to.be.eql("XDFGHTY");
+      expect(Formatter.itemIdLink("XDFGHTY", "true", "ticket", "")).to.be.eql("XDFGHTY");
+      expect(Formatter.itemIdLink("XDFGHTY", "true", "ticket")).to.be.eql("XDFGHTY");
+    });
+
+    it("should render the link for a redeemable item", function () {
+      expect(Formatter.itemIdLink("RI-1234-5678-9010", "true", "R-Item", "54e89f661fd39fa22f0005fb")).to.be.eql("<a href=\"/tickets/redeemableItems/54e89f661fd39fa22f0005fb\">RI-1234-5678-9010</a>");
+    });
+
+    it("should render the link for a refund", function () {
+      expect(Formatter.itemIdLink("R-XDFGHTY", "true", "refund", "54e89f661fd39fa22f0005fb")).to.be.eql("<a href=\"/tickets/refunds/54e89f661fd39fa22f0005fb\">R-XDFGHTY</a>");
+    });
+
+    it("should not render the ticket link if _id is missing", function () {
+      expect(Formatter.itemIdLink("R-XDFGHTY", "true", "refund", "undefined")).to.be.eql("R-XDFGHTY");
+      expect(Formatter.itemIdLink("R-XDFGHTY", "true", "refund", "null")).to.be.eql("R-XDFGHTY");
+      expect(Formatter.itemIdLink("R-XDFGHTY", "true", "refund", "")).to.be.eql("R-XDFGHTY");
+      expect(Formatter.itemIdLink("R-XDFGHTY", "true", "refund")).to.be.eql("R-XDFGHTY");
+    });
+
+    it("should render the link for a parcel", function () {
+      var _id = "54e89f661fd39fa22f0005fb";
+      var displayId = "PA-54e8-9f66-1fd3-9fa2-2f00-05fb";
+      expect(Formatter.itemIdLink(displayId, "true", "parcel", _id)).to.be.eql("<a href=\"/parcels/54e89f661fd39fa22f0005fb\">PA-54e8-9f66-1fd3-9fa2-2f00-05fb</a>");
+    });
+
+    it("should render the link for a flexpass", function () {
+      expect(Formatter.itemIdLink("XDFGHTY", "true", "flexpass", "54e89f661fd39fa22f0005fb")).to.be.eql("<a href=\"/tickets/54e89f661fd39fa22f0005fb\">XDFGHTY</a>");
+    });
+  });
 });
+
