@@ -163,6 +163,24 @@ describe("Formatter", function () {
     });
   });
 
+  describe("moneyToNumber", function () {
+
+    it("should convert money to original value for 100.00 ", function () {
+      const expectedValue = 10000000;
+      const money = Formatter.money(expectedValue);
+      expect(money).to.be.eql("100.00");
+      expect(Formatter.moneyToNumber(money)).to.be.eql(expectedValue);
+    });
+
+    it("should convert money to original value for 0.10", function () {
+      const expectedValue = 10000;
+      const money = Formatter.money(expectedValue);
+      expect(money).to.be.eql("0.10");
+      expect(Formatter.moneyToNumber(money)).to.be.eql(expectedValue);
+    });
+
+  });
+
   describe("money", function () {
 
     it("should format to two decimal", function () {
