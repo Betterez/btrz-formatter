@@ -15,8 +15,8 @@
     "url": "https://github.com/Betterez/btrz-formatter.git"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
-    "mocha": "^9.1.3"
+    "chai": "^4.3.6",
+    "mocha": "^10.1.0"
   },
   "keywords": [
     "Formatting",
@@ -30,6 +30,6 @@
   },
   "homepage": "https://github.com/Betterez/btrz-formatter",
   "dependencies": {
-    "bz-date": "^1.0.0"
+    "bz-date": "^1.1.0"
   }
 }
