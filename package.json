@@ -4,8 +4,8 @@
   "description": "A formatter library",
   "main": "index.js",
   "scripts": {
-    "tdd": "mocha --recursive test/ -w",
-    "test": "mocha --recursive  test/",
+    "tdd": "node --test --watch test/formatter_tests.js",
+    "test": "node --test test/formatter_tests.js",
     "preversion": "npm test",
     "postversion": "git push origin master && git push --tags",
     "version": "git tag $1"
@@ -13,10 +13,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Betterez/btrz-formatter.git"
-  },
-  "devDependencies": {
-    "chai": "4.3.7",
-    "mocha": "10.2.0"
   },
   "keywords": [
     "Formatting",
@@ -30,6 +26,6 @@
   },
   "homepage": "https://github.com/Betterez/btrz-formatter",
   "dependencies": {
-    "bz-date": "1.2.1"
+    "bz-date": "2.1.0"
   }
 }
