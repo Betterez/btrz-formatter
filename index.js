@@ -11,7 +11,6 @@
  * The date defaults to the current date/time.
  * The mask defaults to dateFormat.masks.default.
  */
-
 var _dateFormat = function () {
   var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZW]|"[^"]*"|'[^']*'/g,
       timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
@@ -173,8 +172,13 @@ _dateFormat.i18n = {
   }
 };
 
+const lodashy = require("./lodashy");
+
 var Formatter = function () {
   return {
+    merge: lodashy.merge,
+    cloneDeep: lodashy.cloneDeep,
+    clone: lodashy.clone,
     asValueType: function asValueType(value, type, symbol) {
       symbol = symbol || type;
 
