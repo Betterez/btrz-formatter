@@ -60,7 +60,11 @@ const nativeGetSymbols = Object.getOwnPropertySymbols;
 const getPrototype = Object.getPrototypeOf;
 const objectCreate = Object.create;
 const defineProperty = Object.defineProperty;
-const allocUnsafe = Buffer.allocUnsafe;
+const BufferCtor = typeof Buffer === "function" ? Buffer : undefined;
+const allocUnsafe = BufferCtor && BufferCtor.allocUnsafe;
+const nativeIsBuffer = BufferCtor && typeof BufferCtor.isBuffer === "function"
+  ? BufferCtor.isBuffer
+  : undefined;
 const symbolProto = typeof Symbol === "undefined" ? undefined : Symbol.prototype;
 const symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
 const reFlags = /\w*$/;
@@ -68,6 +72,12 @@ const reFlags = /\w*$/;
 function stubArray() {
   return [];
 }
+
+function stubFalse() {
+  return false;
+}
+
+const isBuffer = nativeIsBuffer || stubFalse;
 
 function arrayFilter(array, predicate) {
   var index = -1;
@@ -467,7 +477,7 @@ function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, sta
   var isCommon = newValue === undefined;
   if (isCommon) {
     var isArr = Array.isArray(srcValue);
-    var isBuff = !isArr && Buffer.isBuffer(srcValue);
+    var isBuff = !isArr && isBuffer(srcValue);
     var isTyped = !isArr && !isBuff && isTypedArray(srcValue);
 
     newValue = srcValue;
@@ -568,7 +578,7 @@ function baseClone(value, bitmask, customizer, key, object, stack) {
     const tag = getTag(value);
     const isFunc = tag === funcTag;
 
-    if (Buffer.isBuffer(value)) {
+    if (isBuffer(value)) {
       return cloneBuffer(value, isDeep);
     }
     if (tag == objectTag || tag == argsTag || (isFunc && !object)) {
