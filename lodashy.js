@@ -60,7 +60,14 @@ const nativeGetSymbols = Object.getOwnPropertySymbols;
 const getPrototype = Object.getPrototypeOf;
 const objectCreate = Object.create;
 const defineProperty = Object.defineProperty;
-const BufferCtor = typeof Buffer === "function" ? Buffer : undefined;
+const root = typeof globalThis === "object"
+  ? globalThis
+  : typeof global === "object"
+    ? global
+    : typeof window === "object"
+      ? window
+      : undefined;
+const BufferCtor = root && typeof root.Buffer === "function" ? root.Buffer : undefined;
 const allocUnsafe = BufferCtor && BufferCtor.allocUnsafe;
 const nativeIsBuffer = BufferCtor && typeof BufferCtor.isBuffer === "function"
   ? BufferCtor.isBuffer

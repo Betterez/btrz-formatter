@@ -1,5 +1,8 @@
-const {describe, it} = require("node:test");
-const assert = require("node:assert/strict");
+const {describe, it} = require("test");
+const assert = require("assert/strict");
+const fs = require("fs");
+const path = require("path");
+const vm = require("vm");
 
 const lodashy = require("../index.js");
 
@@ -148,6 +151,41 @@ describe("lodashy helpers", () => {
 
       assert.notEqual(cloned[symbolKey], symbolValue);
       assert.deepEqual(cloned[symbolKey], symbolValue);
+    });
+
+    it("loads in contexts without global Buffer", () => {
+      const modulePath = path.resolve(__dirname, "../lodashy.js");
+      const source = fs.readFileSync(modulePath, "utf8");
+      const sandbox = {
+        module: {exports: {}},
+        exports: {},
+        require,
+        globalThis: {},
+        Object,
+        Symbol,
+        Map,
+        Set,
+        Array,
+        DataView,
+        ArrayBuffer,
+        Uint8Array,
+        Uint8ClampedArray,
+        Uint16Array,
+        Uint32Array,
+        Int8Array,
+        Int16Array,
+        Int32Array,
+        Float32Array,
+        Float64Array,
+        Date,
+        RegExp
+      };
+
+      vm.runInNewContext(source, sandbox, {filename: modulePath});
+
+      const cloned = sandbox.module.exports.cloneDeep({nested: {id: 1}});
+
+      assert.deepEqual(cloned, {nested: {id: 1}});
     });
   });
 
