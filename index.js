@@ -255,7 +255,7 @@ var Formatter = function () {
     },
     moneyToNumber: function moneyToNumber(_money) {
       var float = parseFloat(_money);
-      return float * 100 * 1000;
+      return Math.round(float * 100 * 1000);
     },
     money: function money(_money) {
       _money = Math.round(_money / 1000) / 100;
