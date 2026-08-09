@@ -172,6 +172,20 @@ describe("Formatter", function () {
       assert.strictEqual(money, "0.10");
       assert.strictEqual(Formatter.moneyToNumber(money), expectedValue);
     });
+
+    it("should convert money to original value for 19.99 without float error", function () {
+      const expectedValue = 1999000;
+      const money = Formatter.money(expectedValue);
+      assert.strictEqual(money, "19.99");
+      assert.strictEqual(Formatter.moneyToNumber(money), expectedValue);
+    });
+
+    it("should convert money to original value for 1.10 without float error", function () {
+      const expectedValue = 110000;
+      const money = Formatter.money(expectedValue);
+      assert.strictEqual(money, "1.10");
+      assert.strictEqual(Formatter.moneyToNumber(money), expectedValue);
+    });
   });
 
   describe("money", function () {
