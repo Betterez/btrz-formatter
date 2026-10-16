@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/Betterez/btrz-formatter",
   "dependencies": {
-    "bz-date": "2.4.0"
+    "bz-date": "2.5.0"
   }
 }
